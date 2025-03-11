@@ -78,19 +78,20 @@
 
 		// Add record to database
 		document.getElementById('dataForm').addEventListener('submit', async (event) => {
-		    event.preventDefault();
-		    const assTxt = document.getElementById('assInp').value;
-		    const resTxt = document.getElementById('resInp').value;
+			event.preventDefault();
+			const Assertion = document.getElementById('assInp').value;
+			const Reasoning = document.getElementById('resInp').value;
 
-		    const { error } = await supabase.from('Arguments').insert([{ Assertion, Reasoning }]);
-		    if (error) {
-		        console.error('Error adding record:', error);
-		        return;
-		    }
+			const { error } = await supabase.from('Arguments').insert([{ Assertion, Reasoning }]);
+			if (error) {
+				console.error('Error adding record:', error);
+				return;
+			}
 
-		    document.getElementById('dataForm').reset();
-		    fetchRecords();
+			document.getElementById('dataForm').reset();
+			fetchRecords();
 		});
+
 
 		// Initialize
 		fetchRecords();
