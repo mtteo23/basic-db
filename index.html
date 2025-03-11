@@ -50,48 +50,48 @@
         </tbody>
     </table>
 
-   <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    <script type="module">
+		import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-    // Supabase configuration
-    const SUPABASE_URL = 'https://your-project-url.supabase.co';
-    const SUPABASE_ANON_KEY = 'your-anon-public-key';
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+		// Supabase configuration
+		const SUPABASE_URL = 'https://htbxgsolhsxacotnprjq.supabase.co';
+		const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0Ynhnc29saHN4YWNvdG5wcmpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE2MzQ2MzAsImV4cCI6MjA1NzIxMDYzMH0.OJy9IdF8aWh_YuqU3WIdvuqAX-2GAfTTjMxu9zMAHMo';
+		const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    // Fetch and display records
-    async function fetchRecords() {
-        const { data, error } = await supabase.from('records').select('*');
-        if (error) {
-            console.error('Error fetching records:', error);
-            return;
-        }
-        const table = document.getElementById('dataTable');
-        table.innerHTML = '';
-        data.forEach(record => {
-            const row = document.createElement('tr');
-            row.innerHTML = `<td>${record.id}</td><td>${record.name}</td><td>${record.age}</td>`;
-            table.appendChild(row);
-        });
-    }
+		// Fetch and display records
+		async function fetchRecords() {
+		    const { data, error } = await supabase.from('records').select('*');
+		    if (error) {
+		        console.error('Error fetching records:', error);
+		        return;
+		    }
+		    const table = document.getElementById('dataTable');
+		    table.innerHTML = '';
+		    data.forEach(record => {
+		        const row = document.createElement('tr');
+		        row.innerHTML = `<td>${record.id}</td><td>${record.name}</td><td>${record.age}</td>`;
+		        table.appendChild(row);
+		    });
+		}
 
-    // Add record to database
-    document.getElementById('dataForm').addEventListener('submit', async (event) => {
-        event.preventDefault();
-        const name = document.getElementById('name').value;
-        const age = document.getElementById('age').value;
+		// Add record to database
+		document.getElementById('dataForm').addEventListener('submit', async (event) => {
+		    event.preventDefault();
+		    const name = document.getElementById('name').value;
+		    const age = document.getElementById('age').value;
 
-        const { error } = await supabase.from('records').insert([{ name, age }]);
-        if (error) {
-            console.error('Error adding record:', error);
-            return;
-        }
+		    const { error } = await supabase.from('records').insert([{ name, age }]);
+		    if (error) {
+		        console.error('Error adding record:', error);
+		        return;
+		    }
 
-        document.getElementById('dataForm').reset();
-        fetchRecords();
-    });
+		    document.getElementById('dataForm').reset();
+		    fetchRecords();
+		});
 
-    // Initialize
-    fetchRecords();
+		// Initialize
+		fetchRecords();
 	</script>
 
 </body>
