@@ -34,6 +34,7 @@
     <form id="dataForm">
         <input type="text" id="assInp" placeholder="Enter assertion" required>
         <input type="text" id="resInp" placeholder="Enter reasoning" required>
+        <input type="number" id="parInp" placeholder="Enter parent" required>
         <button type="submit">Add to Database</button>
     </form>
 
@@ -70,7 +71,7 @@
 		    table.innerHTML = '';
 		    data.forEach(argument => {
 		        const row = document.createElement('tr');
-		        row.innerHTML = `<td>${argument.id}</td><td>${argument.Assertion}</td><td>${argument.Reasoning}</td>`;
+		        row.innerHTML = `<td>${argument.id}</td><td>${argument.Assertion}</td><td>${argument.Reasoning}</td><td>${argument.Parent}</td>`;
 		        table.appendChild(row);
 		    });
 		    
@@ -81,8 +82,9 @@
 			event.preventDefault();
 			const Assertion = document.getElementById('assInp').value;
 			const Reasoning = document.getElementById('resInp').value;
+			const Parent = document.getElementById('parInp').value;
 
-			const { error } = await supabase.from('Arguments').insert([{ Assertion, Reasoning }]);
+			const { error } = await supabase.from('Arguments').insert([{ Assertion, Reasoning, Parent }]);
 			if (error) {
 				console.error('Error adding record:', error);
 				return;
