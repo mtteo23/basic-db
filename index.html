@@ -82,7 +82,7 @@
 		    const assTxt = document.getElementById('assInp').value;
 		    const resTxt = document.getElementById('resInp').value;
 
-		    const { error } = await supabase.from('Arguments').insert([{ name, age }]);
+		    const { error } = await supabase.from('Arguments').insert([{ assTxt, resTxt }]);
 		    if (error) {
 		        console.error('Error adding record:', error);
 		        return;
