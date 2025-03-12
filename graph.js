@@ -1,116 +1,5 @@
-<html lang="it">
-	<head>
-		
-		<link rel="stylesheet" href="style.css">
-		
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Argument Tree</title>
-	</head>
-
-	<body>
-		<div class="grow-wrap">
-			<textarea spellcheck="false" cols="30" onInput="this.parentNode.dataset.replicatedValue = this.value"></textarea>
-		</div>
-				
-		<h1>Basic Database Interaction</h1>
-		<form id="dataForm">
-			<input type="text" id="assInp" placeholder="Enter assertion" required>
-			<input type="text" id="resInp" placeholder="Enter reasoning" required>
-			<input type="number" id="parInp" placeholder="Enter parent" required>
-			<button type="submit">Add to Database</button>
-		</form>
-
-		<h2>Database Records</h2>
-		<table>
-			<thead>
-				<tr>
-					<th>ID</th>
-					<th>Assertion</th>
-					<th>Reasoning</th>
-				</tr>
-			</thead>
-			<tbody id="dataTable">
-			</tbody>
-		</table>
-    
-		<div id="graph" align="center"></div>
-		
-		<div id=""></div>
-	</body>
-	
-	
-    <script id="argument-data" type="text/plain">
-#0{La pasta rigata è migliore di quella liscia}{La mozione è limitata alla pasta prodotta industrialmente}
-#1-0{La pasta valorizza il condimento}{Le superfici ruvide e irregolari creano più spazi per il deposito del condimento che nelle paste lisce scorrerebbe via. In questo modo ogni elemento ha la maggior quantità possibile di condimento}
-#2-0{La pasta rigata si cuoce in maniera irregolare}{Le superfici irregolari della pasta creano aree a distanze diverse dal centro che quindi si cuoceranno a velocità diverse rispetto ad altre aree}
-#1-1-0{Il trattenimento del condimento non è esclusivo della pasta rigata}{La pasta liscia laminata al bronzo trattiene il sugo tanto quanto la pasta rigata, grazie a micro-irregolarita}
-    </script>
-    
-    <script id="evidence-data" type="text/plain">
-1E-1-0{Evidence: trust me bro}{Seariously, are you going to disagree?}
-    </script>
-    
-    <script id="comment-data" type="text/plain">
-    </script>
-
-	<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-	
-	<script type="module">
-		import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-
-		// Supabase configuration
-		const SUPABASE_URL = 'https://htbxgsolhsxacotnprjq.supabase.co';
-		const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0Ynhnc29saHN4YWNvdG5wcmpxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE2MzQ2MzAsImV4cCI6MjA1NzIxMDYzMH0.OJy9IdF8aWh_YuqU3WIdvuqAX-2GAfTTjMxu9zMAHMo';
-		const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-		// Fetch and display records
-		async function fetchRecords() {
-		    const { data, error } = await supabase.from('Arguments').select('*');
-		    if (error) {
-		        console.error('Error fetching records:', error);
-		        return;
-		    }
-		    let argList='';
-		    const table = document.getElementById('dataTable');
-		    table.innerHTML = '';
-		    data.forEach(argument => {
-		        const row = document.createElement('tr');
-		        row.innerHTML = '<td>'+argument.id+'</td><td>'+argument.Assertion+'</td><td>'+argument.Reasoning+'</td><td>'+argument.Parent+'</td>';
-		        argList+='#'+argument.Parent+'-'+argument.id+'{'+argument.Assertion+'}{'+argument.Reasoning+'}\n';
-		        table.appendChild(row);
-		    });
-		    const argData=document.getElementById('argument-data');
-		    argData.innerHTML=argList;
-		}
-
-		// Add record to database
-		document.getElementById('dataForm').addEventListener('submit', async (event) => {
-			event.preventDefault();
-			const Assertion = document.getElementById('assInp').value;
-			const Reasoning = document.getElementById('resInp').value;
-			const Parent = document.getElementById('parInp').value;
-
-			const { error } = await supabase.from('Arguments').insert([{ Assertion, Reasoning, Parent }]);
-			if (error) {
-				console.error('Error adding record:', error);
-				return;
-			}
-
-			document.getElementById('dataForm').reset();
-			fetchRecords();
-		});
-
-
-		// Initialize
-		fetchRecords();
-	</script>
-	
-	<script>
-	
-	document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
 	listArg();
-	alert(parentOf('15'));
 	
 	
 	parent=document.getElementById("graph");
@@ -360,27 +249,6 @@ function expandOption(id)
 	modifyMode(id);
 }
 
-function parentOf(id){
-	rows=listArg();
-            
-    if(rows[0].length==0)
-    {
-		rows=rows.slice(1);
-	}
-	
-    for(let i=0; i<rows.length; i++)
-    {	
-		let ind=rows[i].search("{");
-		let tmp=rows[i].slice(0, ind).trim();
-		ind=tmp.search("-");
-		if(tmp.slice(0, ind)==id)
-		{
-			return tmp.slice(ind+1);
-		}
-	}
-	return -1;
-}
-
 function idList()
 {
 	rows=listArg();
@@ -604,8 +472,4 @@ function listArg()
 	}
 	
 	return rows;
-}	
-	</script>
-</html>
-
-
+}
